@@ -1,0 +1,198 @@
+═══════════════════════════════════════════════════════════════════════════════
+                    CONEXIÓN AUTOMÁTICA A SUPABASE
+                        RESUMEN EJECUTIVO
+═══════════════════════════════════════════════════════════════════════════════
+
+CONTEXTO:
+Hemos implementado un sistema de configuración AUTOMÁTICA para conectar la app
+Finanzas SaaS a tu instancia de Supabase sin necesidad de editar archivos.
+
+═══════════════════════════════════════════════════════════════════════════════
+                              ¿QUÉ SE HIZO?
+═══════════════════════════════════════════════════════════════════════════════
+
+1. ✅ Creamos js/setup.js (nueva clase SupabaseSetup)
+   - Detecta si la app está configurada
+   - Si NO está configurada, muestra un modal automático
+   - Valida que las credenciales sean correctas
+   - Guarda credenciales en localStorage para la sesión
+
+2. ✅ Actualizamos index.html
+   - Agregamos <script src="/js/setup.js"></script>
+   - Posicionado justo después de config.js
+   - Ejecuta automáticamente al cargar la página
+
+3. ✅ Creamos CONEXION_AUTOMATICA.md
+   - Guía paso a paso en español
+   - Incluye flujo visual
+   - Soluciones para errores comunes
+
+═══════════════════════════════════════════════════════════════════════════════
+                          FLUJO DE FUNCIONAMIENTO
+═══════════════════════════════════════════════════════════════════════════════
+
+   ABRES http://localhost:3000
+            ↓
+   index.html carga scripts
+   (config.js → setup.js → utils.js)
+            ↓
+   setup.js detecta configuración
+            ↓
+   ¿Está configurado? 
+       SÍ → Continúa con login
+       NO → Muestra MODAL automático
+            ↓
+   Ingresas URL y Key de Supabase
+            ↓
+   Click "Conectar Supabase"
+            ↓
+   Credenciales se guardan en localStorage
+            ↓
+   Supabase se reinicializa
+            ↓
+   ✅ CONECTADO - Ya puedes usar la app
+
+═══════════════════════════════════════════════════════════════════════════════
+                            PASOS A SEGUIR
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Obtener credenciales de Supabase (5 min)
+  1. Ve a https://supabase.com
+  2. Crea un proyecto nuevo o selecciona uno existente
+  3. Ve a Settings → API
+  4. Copia:
+     - Project URL: https://xxxxx.supabase.co
+     - Anon Public Key: eyJ0...
+
+PASO 2: Abrir la app (1 min)
+  $ cd /home/claude/finanzas-saas
+  $ python -m http.server 3000
+  
+  Luego abre: http://localhost:3000
+
+PASO 3: Llenar modal (1 min)
+  - Pega Project URL en el campo "Project URL"
+  - Pega Anon Key en el campo "Anon Public Key"
+  - Presiona "Conectar Supabase"
+  - Verás: ✅ Supabase conectado correctamente
+
+PASO 4: Crear base de datos en Supabase (5 min)
+  1. En Supabase → SQL Editor
+  2. New Query
+  3. Copia TODA el contenido de /database/schema.sql
+  4. Pega y ejecuta (Run)
+
+PASO 5: Crear bucket de almacenamiento (1 min)
+  1. En Supabase → Storage
+  2. New Bucket
+  3. Nombre: invoices
+  4. Privacidad: Private
+  5. Create
+
+TOTAL: 13 minutos ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+                          VALIDACIONES IMPLEMENTADAS
+═══════════════════════════════════════════════════════════════════════════════
+
+El modal validar automáticamente:
+
+✓ Que los campos no estén vacíos
+✓ Que la URL contenga "supabase.co"
+✓ Que la Key tenga al menos 100 caracteres
+✓ Que el formato sea correcto
+✓ Mensajes de error en español
+
+═══════════════════════════════════════════════════════════════════════════════
+                        CARACTERÍSTICAS DE SEGURIDAD
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ El ANON_KEY es público (no es secreto)
+✓ Las credenciales se guardan SOLO en localStorage
+✓ Si borras el localStorage, se pide configurar de nuevo
+✓ Las credenciales NO se envían a servidores externos
+✓ Se validan en el cliente antes de usar
+
+═══════════════════════════════════════════════════════════════════════════════
+                        ARCHIVOS MODIFICADOS/CREADOS
+═══════════════════════════════════════════════════════════════════════════════
+
+NUEVOS:
+  ✓ js/setup.js (350 líneas)
+  ✓ CONEXION_AUTOMATICA.md (guía completa)
+  ✓ RESUMEN_CONEXION.txt (este archivo)
+
+MODIFICADOS:
+  ✓ index.html (agregó 1 línea: <script src="/js/setup.js"></script>)
+
+═══════════════════════════════════════════════════════════════════════════════
+                           SOLUCIÓN DE PROBLEMAS
+═══════════════════════════════════════════════════════════════════════════════
+
+PROBLEMA: "El modal no aparece"
+SOLUCIÓN: 
+  - Asegúrate que config.js tiene valores DEFAULT (no configurados)
+  - Recarga la página (Ctrl+Shift+R - limpia caché)
+  - Abre consola (F12) y busca errores
+
+PROBLEMA: "CORS error"
+SOLUCIÓN:
+  - Verifica que la URL NO termine en "/"
+  - Copia la KEY completa (sin espacios)
+
+PROBLEMA: "RLS deny" después de conectar
+SOLUCIÓN:
+  - Ejecuta el schema.sql en Supabase
+  - Espera 30 segundos
+  - Recarga la app
+
+PROBLEMA: "Credenciales se pierden al recargar"
+SOLUCIÓN:
+  - localStorage está activo
+  - Si cierras todo y vuelves a abrir, te pide credenciales de nuevo
+  - O edita config.js manualmente (alternativa)
+
+═══════════════════════════════════════════════════════════════════════════════
+                          DOCUMENTACIÓN RELACIONADA
+═══════════════════════════════════════════════════════════════════════════════
+
+Consulta estos archivos para más información:
+
+📄 CONEXION_AUTOMATICA.md
+   → Guía visual paso a paso
+   → Flujo detallado
+   → Instalación como PWA
+
+📄 SETUP.md
+   → Configuración manual avanzada
+   → Troubleshooting
+   → Google OAuth
+
+📄 README.md
+   → Características generales
+   → Stack técnico
+   → Planes de suscripción
+
+📄 API.md
+   → Referencia completa de métodos
+   → Ejemplos de código
+   → Integración con MCP
+
+═══════════════════════════════════════════════════════════════════════════════
+                              RESUMEN FINAL
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ La conexión a Supabase es AUTOMÁTICA
+✅ Solo necesitas pegar 2 valores (URL y Key)
+✅ Valida todo automáticamente
+✅ Guarda en localStorage
+✅ Sin necesidad de editar archivos
+
+Tiempo total de setup: 13 minutos
+Complejidad: FÁCIL
+Riesgo: MÍNIMO (sin datos sensibles)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+¿Listo para empezar? Sigue los pasos en CONEXION_AUTOMATICA.md
+

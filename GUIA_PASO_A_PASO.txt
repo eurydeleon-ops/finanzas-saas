@@ -1,0 +1,624 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                    GUÍA PASO A PASO - SUPER FÁCIL                        ║
+║               Conectar Finanzas SaaS a Supabase (Sin programación)       ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+🎯 OBJETIVO: Conectar la app a Supabase en 15 minutos
+⏱️ TIEMPO: 15 minutos máximo
+🛑 DIFICULTAD: Ninguna (solo copiar y pegar)
+
+═══════════════════════════════════════════════════════════════════════════════
+                              PARTE 1: SUPABASE
+                        (Crear la base de datos en la nube)
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.1: Ir a Supabase
+───────────────────────────
+
+Abre tu navegador (Chrome, Firefox, etc) y ve a:
+
+    https://supabase.com
+
+Verás esta pantalla:
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                               │
+│  🔵 SUPABASE                                                 │
+│                                                               │
+│  "Build in a weekend. Scale to millions."                   │
+│                                                               │
+│  ┌──────────────────┐  ┌──────────────────┐                │
+│  │ Sign Up (AZUL)   │  │ Sign In          │                │
+│  └──────────────────┘  └──────────────────┘                │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+
+👆 HAZ CLIC en "Sign Up" o "Sign In"
+
+Si ya tienes cuenta → Click "Sign In"
+Si es nueva → Click "Sign Up"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.2: Login o Registro
+──────────────────────────
+
+Verás una pantalla para entrar:
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                               │
+│  Email o usuario:  [____________________________]            │
+│                                                               │
+│  Contraseña:       [____________________________]            │
+│                                                               │
+│                    ┌──────────────┐                         │
+│                    │ Sign In (azul)│                        │
+│                    └──────────────┘                         │
+│                                                               │
+│  ¿No tienes cuenta? Sign Up aquí                            │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+
+👉 Ingresa tu email y contraseña
+👉 Click "Sign In" o "Sign Up"
+
+ESPERA 30 segundos a que cargue...
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.3: Dashboard de Supabase
+───────────────────────────────
+
+Cuando entres, verás tu DASHBOARD:
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                               │
+│  🔵 SUPABASE                                [Tu email ▼]     │
+│                                                               │
+│  Projects            ← AQUÍ                                  │
+│                                                               │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │ Existing projects                                      │  │
+│  │                                                         │  │
+│  │ Tu Proyecto (si existe)      [SELECCIONAR]            │  │
+│  │                                                         │  │
+│  │ O:  [+ New Project] (botón azul)                     │  │
+│  │                                                         │  │
+│  └───────────────────────────────────────────────────────┘  │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+
+¿Tienes un proyecto Supabase existente?
+  → SÍ: Click en su nombre
+  → NO: Click en "+ New Project"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.4: Crear Nuevo Proyecto (SI NO LO TIENES)
+────────────────────────────────────────────────
+
+Si clickeaste "+ New Project", verás:
+
+┌─────────────────────────────────────────────────────────────┐
+│  Create a new project                                        │
+│                                                               │
+│  Project name:    [Finanzas SaaS          ]                │
+│                                                               │
+│  Password:        [____________________________]            │
+│                   (esta es para admin - NO OLVIDES)         │
+│                                                               │
+│  Region:          [América Latina - México ▼]              │
+│                   (elige América Latina)                    │
+│                                                               │
+│  Pricing Plan:    [Free (gratis)]                          │
+│                   (deja en Free)                            │
+│                                                               │
+│                   ┌────────────────────────┐               │
+│                   │ Create new project     │               │
+│                   │    (botón azul)        │               │
+│                   └────────────────────────┘               │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+
+INSTRUCCIONES:
+1. Nombre: "Finanzas SaaS" (o el que prefieras)
+2. Contraseña: Pon algo seguro (ej: "Micontra123!!")
+   👉 GUARDA ESTA CONTRASEÑA - la necesitarás
+3. Region: Elige "América Latina" o "México"
+4. Pricing: Deja en "Free"
+5. Click "Create new project"
+
+ESPERA 2-3 MINUTOS a que Supabase lo cree...
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.5: Tu Proyecto Supabase Listo
+────────────────────────────────────
+
+Cuando termine, verás:
+
+┌─────────────────────────────────────────────────────────────┐
+│                                                               │
+│  🔵 SUPABASE > Finanzas SaaS                                │
+│                                                               │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │ 📊 Dashboard                                         │   │
+│  │ 🗄️ SQL Editor                                       │   │
+│  │ 📁 Storage                                           │   │
+│  │ 👥 Auth                                              │   │
+│  │ ⚙️  Settings                          ← AQUÍ        │   │
+│  │                                                      │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                               │
+│  [Tu contenido del proyecto]                                │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+
+👉 Click en "⚙️ Settings"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.6: Obtener Credenciales (LA PARTE MÁS IMPORTANTE)
+─────────────────────────────────────────────────────────
+
+Cuando des click en Settings, verás:
+
+┌─────────────────────────────────────────────────────────────┐
+│  Settings                                                    │
+│                                                               │
+│  Sidebar izquierdo:                                          │
+│  ┌─────────────────────┐                                    │
+│  │ Project Settings    │                                    │
+│  │ API                 │ ← CLICK AQUÍ                      │
+│  │ Database            │                                    │
+│  │ ...                 │                                    │
+│  └─────────────────────┘                                    │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+
+👉 Click en "API" (en el menú de la izquierda)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1.7: Copiar Credenciales
+──────────────────────────────
+
+Cuando hagas click en "API", verás esto:
+
+┌──────────────────────────────────────────────────────────────┐
+│  API Settings                                                 │
+│                                                                │
+│  Project URL                                                  │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │ https://abcdefghijkl.supabase.co                     │   │
+│  │                                        [COPY button] │   │
+│  └──────────────────────────────────────────────────────┘   │
+│  ↑ COPIA ESTO                                               │
+│                                                                │
+│  Project API Keys                                             │
+│                                                                │
+│  anon public                                                  │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │ eyJ0eXAiOiJKV1QiLCJhbGc...                           │   │
+│  │ (es muy larga, como 200 caracteres)                 │   │
+│  │                                        [COPY button] │   │
+│  └──────────────────────────────────────────────────────┘   │
+│  ↑ COPIA ESTO TAMBIÉN                                       │
+│                                                                │
+└──────────────────────────────────────────────────────────────┘
+
+GUARDAR ESTAS DOS COSAS EN UN LUGAR SEGURO:
+
+📝 Abre el Bloc de Notas en tu PC y copia esto:
+
+PROJECT_URL: https://abcdefghijkl.supabase.co
+ANON_KEY: eyJ0eXAiOiJKV1QiLCJhbGc...
+
+(Reemplaza con lo que veas en Supabase)
+
+LAS NECESITARÁS EN 5 MINUTOS.
+
+═══════════════════════════════════════════════════════════════════════════════
+                        PARTE 2: ABRIR LA APP
+                    (En tu navegador, localhost)
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 2.1: Abrir Línea de Comandos
+─────────────────────────────────
+
+En tu PC (Windows, Mac o Linux):
+
+WINDOWS:
+  1. Presiona: Windows + R
+  2. Escribe: cmd
+  3. Presiona: ENTER
+
+MAC:
+  1. Presiona: Cmd + Espacio
+  2. Escribe: terminal
+  3. Presiona: ENTER
+
+LINUX:
+  1. Abre Terminal (Ctrl + Alt + T)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 2.2: Ir a la Carpeta del Proyecto
+──────────────────────────────────────
+
+En la línea de comandos, escribe:
+
+  cd /home/claude/finanzas-saas
+
+Luego presiona ENTER.
+
+(Si estás en Windows, podría ser diferente - pregunta)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 2.3: Iniciar el Servidor Local
+───────────────────────────────────
+
+Escribe esto en la línea de comandos:
+
+  python -m http.server 3000
+
+Luego presiona ENTER.
+
+Verás algo como:
+
+  Serving HTTP on 0.0.0.0 port 3000 (http://0.0.0.0:3000/)
+
+✅ ESO ES CORRECTO - El servidor está funcionando.
+
+AHORA ABRE EL NAVEGADOR.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 2.4: Abrir la App en el Navegador
+──────────────────────────────────────
+
+En tu navegador (Chrome, Firefox, etc), ve a:
+
+  http://localhost:3000
+
+Presiona ENTER.
+
+Verás esto:
+
+┌──────────────────────────────────────────────────────────┐
+│                                                            │
+│        🔗 Conectar a Supabase                             │
+│                                                            │
+│  Necesito tus credenciales de Supabase...                 │
+│                                                            │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ Project URL                                         │  │
+│  │ [____________________________________]             │  │
+│  │ Lo encuentras en Supabase → Settings → API         │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                            │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ Anon Public Key                                     │  │
+│  │ [____________________________________]             │  │
+│  │ Es seguro compartir - es una llave pública         │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                            │
+│        ┌──────────────────────────────────────┐          │
+│        │ Conectar Supabase (botón azul)      │          │
+│        └──────────────────────────────────────┘          │
+│                                                            │
+│  ¿No tienes proyecto? Crear uno →                        │
+│                                                            │
+└──────────────────────────────────────────────────────────┘
+
+✅ PERFECTO - El modal automático apareció.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 2.5: Pegar tus Credenciales
+───────────────────────────────
+
+EN EL PRIMER CAMPO ("Project URL"):
+  1. Click en el campo (donde dice "https://xxxxx...")
+  2. Presiona: Ctrl+A (para seleccionar todo)
+  3. Presiona: Ctrl+V (para pegar)
+  
+  Debe quedar así:
+  https://abcdefghijkl.supabase.co
+
+EN EL SEGUNDO CAMPO ("Anon Public Key"):
+  1. Click en el campo
+  2. Presiona: Ctrl+A
+  3. Presiona: Ctrl+V
+  
+  Debe quedar así:
+  eyJ0eXAiOiJKV1QiLCJhbGc...
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 2.6: Click en "Conectar Supabase"
+──────────────────────────────────────
+
+Cuando hayas pegado ambas credenciales:
+
+  👉 CLICK en el botón azul "Conectar Supabase"
+
+Verás un mensaje:
+
+  ✅ Supabase conectado correctamente
+
+¡EXCELENTE! Ya casi terminamos.
+
+═══════════════════════════════════════════════════════════════════════════════
+                          PARTE 3: CREAR BD EN SUPABASE
+                     (Ejecutar el schema - las tablas)
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 3.1: Volver a Supabase (en otra pestaña)
+─────────────────────────────────────────────
+
+Abre una NUEVA pestaña del navegador (Ctrl+T o Cmd+T)
+
+Ve a: https://supabase.com
+
+Entra en tu proyecto "Finanzas SaaS"
+
+Verás el dashboard de Supabase.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 3.2: Ir a SQL Editor
+────────────────────────
+
+En el menú izquierdo de Supabase, click en:
+
+  🗄️ SQL Editor
+
+Verás:
+
+┌──────────────────────────────────────────────────────────┐
+│  SQL Editor                                               │
+│                                                            │
+│  ┌─────────────────────────────────────────────────────┐ │
+│  │ + New Query (botón azul)                            │ │
+│  └─────────────────────────────────────────────────────┘ │
+│                                                            │
+│  Recent Queries:                                          │
+│  (lista de queries anteriores, probablemente vacía)       │
+│                                                            │
+└──────────────────────────────────────────────────────────┘
+
+👉 Click en "+ New Query"
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 3.3: Copiar el Schema SQL
+──────────────────────────────
+
+Ahora necesitas el archivo schema.sql.
+
+En tu PC, ve a la carpeta:
+  /home/claude/finanzas-saas/database/
+
+Ahí verás un archivo llamado:
+  schema.sql
+
+Abrelo con un editor de texto (Bloc de Notas, VSCode, etc).
+
+Verás un archivo muy largo con código SQL (empieza con CREATE TABLE).
+
+Selecciona TODO (Ctrl+A) y copia (Ctrl+C).
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 3.4: Pegar en Supabase SQL Editor
+──────────────────────────────────────
+
+Vuelve a la pestaña de Supabase con el SQL Editor abierto.
+
+Verás un área blanca donde dice "-- Enter your SQL here":
+
+┌──────────────────────────────────────────────────────────┐
+│  New Query                                                │
+│                                                            │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │ -- Enter your SQL here                               │ │
+│  │                                                        │ │
+│  │ [cursor aquí]                                         │ │
+│  │                                                        │ │
+│  │                                                        │ │
+│  └──────────────────────────────────────────────────────┘ │
+│                                                            │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ RUN (botón azul con triángulo ►)                   │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                            │
+└──────────────────────────────────────────────────────────┘
+
+1. Click en el área blanca (donde dice "-- Enter your SQL here")
+2. Presiona Ctrl+A (selecciona todo lo que hay)
+3. Presiona Ctrl+V (pega el schema.sql que copiaste)
+
+Ahora verás TODO el código SQL en el editor.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 3.5: Ejecutar el Schema
+────────────────────────────
+
+Cuando hayas pegado el código SQL completo:
+
+👉 Click en el botón azul "RUN" (o "►")
+
+Verás:
+
+  ⏳ Running query...
+  
+  (espera 30-60 segundos)
+  
+  ✅ Success - X rows affected
+
+PERFECTO. Las tablas de la base de datos se crearon.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 3.6: Crear Storage Bucket
+──────────────────────────────
+
+Ahora necesitas crear un "bucket" (carpeta en la nube).
+
+En el menú izquierdo de Supabase, click en:
+
+  📁 Storage
+
+Verás:
+
+┌──────────────────────────────────────────────────────────┐
+│  Storage                                                  │
+│                                                            │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ + New Bucket (botón azul)                          │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                            │
+│  No buckets yet...                                        │
+│                                                            │
+└──────────────────────────────────────────────────────────┘
+
+👉 Click en "+ New Bucket"
+
+Verás un formulario:
+
+┌──────────────────────────────────────────────────────────┐
+│  Create new bucket                                        │
+│                                                            │
+│  Bucket name:                                             │
+│  [invoices        ]                                      │
+│  (IMPORTANTE: debe ser "invoices" exacto)                │
+│                                                            │
+│  Privacy:                                                 │
+│  ⊙ Private  (SELECCIONA ESTO)                            │
+│  ○ Public                                                 │
+│                                                            │
+│  ┌────────────────────────────────────┐                 │
+│  │ Create bucket (botón azul)         │                 │
+│  └────────────────────────────────────┘                 │
+│                                                            │
+└──────────────────────────────────────────────────────────┘
+
+PASOS:
+1. Nombre: escribe "invoices" (exacto, sin espacios)
+2. Privacy: Elige "Private"
+3. Click "Create bucket"
+
+ESPERA 5 segundos...
+
+✅ Bucket "invoices" creado.
+
+═══════════════════════════════════════════════════════════════════════════════
+                              PARTE 4: ¡LISTO!
+═══════════════════════════════════════════════════════════════════════════════
+
+¡FELICITACIONES! Ya terminaste la configuración.
+
+Ahora la app debería funcionar completamente.
+
+VERIFICA QUE FUNCIONA:
+1. Vuelve a http://localhost:3000 (la pestaña con la app)
+2. Recarga la página (F5 o Ctrl+R)
+3. Deberías ver la pantalla de LOGIN
+
+┌──────────────────────────────────────────────────────────┐
+│                                                            │
+│        💰 Finanzas                                        │
+│                                                            │
+│        "Gestión Financiera Inteligente"                  │
+│                                                            │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │ LOGIN TAB (seleccionado)   REGISTRO              │   │
+│  │                                                    │   │
+│  │  Email:      [_________________________]         │   │
+│  │                                                    │   │
+│  │  Contraseña: [_________________________]         │   │
+│  │                                                    │   │
+│  │            ┌─────────────────────┐              │   │
+│  │            │ Iniciar Sesión      │              │   │
+│  │            │   (botón azul)      │              │   │
+│  │            └─────────────────────┘              │   │
+│  │                                                    │   │
+│  └──────────────────────────────────────────────────┘   │
+│                                                            │
+│  ¿No tienes cuenta? Crea una en "Registro"              │
+│                                                            │
+└──────────────────────────────────────────────────────────┘
+
+Si ves esto ✅ → ¡FUNCIONA!
+
+═══════════════════════════════════════════════════════════════════════════════
+                          CREAR TU PRIMER USUARIO
+═══════════════════════════════════════════════════════════════════════════════
+
+PASO 1: Click en la pestaña "REGISTRO"
+
+Verás:
+
+┌──────────────────────────────────────────────────────────┐
+│  EMAIL:       [_________________________]                │
+│  NOMBRE:      [_________________________]                │
+│  CONTRASEÑA:  [_________________________]                │
+│  REPETIR:     [_________________________]                │
+│                                                            │
+│              ┌──────────────┐                            │
+│              │ Crear Cuenta │                            │
+│              └──────────────┘                            │
+└──────────────────────────────────────────────────────────┘
+
+PASO 2: Rellena:
+  - Email: tu@email.com
+  - Nombre: Tu Nombre
+  - Contraseña: Algo seguro (ej: "Micontra123!!")
+  - Repetir: La misma contraseña
+
+PASO 3: Click "Crear Cuenta"
+
+ESPERA 10 segundos...
+
+✅ Cuenta creada. Ahora puedes entrar con LOGIN.
+
+═══════════════════════════════════════════════════════════════════════════════
+                         ¿QUÉ SIGUE AHORA?
+═══════════════════════════════════════════════════════════════════════════════
+
+Ahora que está todo conectado, puedes:
+
+1. ✅ Crear una empresa (en el dashboard)
+2. ✅ Registrar gastos e ingresos
+3. ✅ Subir facturas con imágenes
+4. ✅ Ver reportes y gráficos
+5. ✅ Gestionar usuarios
+6. ✅ Crear presupuestos
+
+TODO ESTÁ FUNCIONANDO.
+
+═══════════════════════════════════════════════════════════════════════════════
+                         ¿ALGO NO FUNCIONA?
+═══════════════════════════════════════════════════════════════════════════════
+
+PROBLEMA: "El modal no aparece"
+SOLUCIÓN: Recarga la página (Ctrl+Shift+R)
+
+PROBLEMA: "CORS error"
+SOLUCIÓN: Verifica que copiaste la URL completa sin espacios
+
+PROBLEMA: "RLS deny"
+SOLUCIÓN: Verifica que ejecutaste el schema.sql completo
+
+PROBLEMA: "No puedo iniciar sesión"
+SOLUCIÓN: Verifica que creaste una cuenta primero (pestaña REGISTRO)
+
+Si nada funciona, preguntame de nuevo con más detalles.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+¡LISTO! Ahora tienes Finanzas SaaS completamente funcional. 🎉
+

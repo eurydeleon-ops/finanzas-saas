@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Finanzas SaaS - Plataforma de gestión financiera multiempresa">
+  <meta name="theme-color" content="#1e40af">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Finanzas SaaS">
+  
+  <title>Finanzas SaaS - Gestión Financiera Inteligente</title>
+  
+  <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231e40af' width='180' height='180'/><text x='50%' y='50%' font-size='90' font-weight='bold' fill='white' text-anchor='middle' dy='.3em'>$</text></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="/css/styles.css">
+  
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- Google Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+  <!-- Barra de notificaciones -->
+  <div id="notification-container" class="notification-container"></div>
+  
+  <!-- Menú lateral (solo si está autenticado) -->
+  <nav id="sidebar" class="sidebar hidden">
+    <div class="sidebar-header">
+      <h2 class="logo">💰 Finanzas</h2>
+      <button class="sidebar-toggle" onclick="toggleSidebar()">✕</button>
+    </div>
+    
+    <div class="user-section">
+      <div class="user-avatar">👤</div>
+      <div class="user-info">
+        <p id="user-name" class="user-name">Usuario</p>
+        <p id="company-name" class="company-name">Empresa</p>
+      </div>
+    </div>
+    
+    <ul class="nav-menu">
+      <li><a href="#" onclick="navigateTo('dashboard')" class="nav-link">📊 Dashboard</a></li>
+      <li><a href="#" onclick="navigateTo('expenses')" class="nav-link">💸 Gastos</a></li>
+      <li><a href="#" onclick="navigateTo('incomes')" class="nav-link">💰 Ingresos</a></li>
+      <li><a href="#" onclick="navigateTo('invoices')" class="nav-link">📋 Facturas</a></li>
+      <li><a href="#" onclick="navigateTo('budgets')" class="nav-link">📈 Presupuestos</a></li>
+      <li><a href="#" onclick="navigateTo('reports')" class="nav-link">📄 Reportes</a></li>
+      <li><a href="#" onclick="navigateTo('admin')" class="nav-link" id="admin-link" style="display:none;">⚙️ Admin</a></li>
+      <li><a href="#" onclick="navigateTo('settings')" class="nav-link">🔧 Configuración</a></li>
+    </ul>
+    
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="handleLogout()">Cerrar sesión</button>
+    </div>
+  </nav>
+
+  <!-- Contenedor principal -->
+  <main class="main-content">
+    <!-- PÁGINA: Login -->
+    <section id="page-login" class="page active">
+      <div class="login-container">
+        <div class="login-box">
+          <h1 class="login-title">💰 Finanzas SaaS</h1>
+          <p class="login-subtitle">Gestión Financiera Inteligente</p>
+          
+          <div class="tab-group">
+            <button class="tab-button active" onclick="switchTab('login')">Iniciar Sesión</button>
+            <button class="tab-button" onclick="switchTab('register')">Registrarse</button>
+          </div>
+          
+          <!-- Form Login -->
+          <form id="login-form" class="tab-content active" onsubmit="handleLogin(event)">
+            <div class="form-group">
+              <label for="login-email">Correo</label>
+              <input type="email" id="login-email" placeholder="tu@email.com" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="login-password">Contraseña</label>
+              <input type="password" id="login-password" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-primary btn-full">Entrar</button>
+          </form>
+          
+          <!-- Form Registro -->
+          <form id="register-form" class="tab-content" onsubmit="handleRegister(event)">
+            <div class="form-group">
+              <label for="register-name">Nombre Completo</label>
+              <input type="text" id="register-name" placeholder="Tu nombre" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="register-email">Correo</label>
+              <input type="email" id="register-email" placeholder="tu@email.com" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="register-password">Contraseña</label>
+              <input type="password" id="register-password" placeholder="••••••••" minlength="8" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="register-confirm">Confirmar Contraseña</label>
+              <input type="password" id="register-confirm" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn-primary btn-full">Registrarse</button>
+          </form>
+          
+          <div class="divider">o</div>
+          
+          <!-- OAuth -->
+          <button class="btn-oauth" id="google-signin-btn" onclick="handleGoogleLogin()">
+            🔵 Continuar con Google
+          </button>
+          
+          <p class="login-footer">
+            <a href="#" onclick="handleForgotPassword()">¿Olvidaste tu contraseña?</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Dashboard -->
+    <section id="page-dashboard" class="page">
+      <div class="dashboard-header">
+        <h1>📊 Dashboard</h1>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <!-- Selector de mes -->
+      <div class="filter-group">
+        <input type="month" id="dashboard-month" class="input-month">
+        <select id="dashboard-branch" class="input-select">
+          <option value="">Todas las sucursales</option>
+        </select>
+      </div>
+      
+      <!-- Tarjetas de estadísticas -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background-color: #059669;">💰</div>
+          <div class="stat-content">
+            <p class="stat-label">Ingresos</p>
+            <p class="stat-value" id="stat-income">$0.00</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon" style="background-color: #dc2626;">💸</div>
+          <div class="stat-content">
+            <p class="stat-label">Gastos</p>
+            <p class="stat-value" id="stat-expenses">$0.00</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon" style="background-color: #0891b2;">📈</div>
+          <div class="stat-content">
+            <p class="stat-label">Balance</p>
+            <p class="stat-value" id="stat-balance">$0.00</p>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon" style="background-color: #7c3aed;">📊</div>
+          <div class="stat-content">
+            <p class="stat-label">Tasa de Ahorro</p>
+            <p class="stat-value" id="stat-savings">0%</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Gráficos -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Ingresos vs Gastos (últimos 6 meses)</h3>
+          <canvas id="chart-balance"></canvas>
+        </div>
+        
+        <div class="chart-card">
+          <h3>Gastos por Categoría</h3>
+          <canvas id="chart-expenses-pie"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Gastos -->
+    <section id="page-expenses" class="page">
+      <div class="page-header">
+        <h1>💸 Gastos</h1>
+        <button class="btn-primary" onclick="openExpenseForm()">+ Nuevo Gasto</button>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <div class="filter-group">
+        <select id="expense-category" class="input-select">
+          <option value="">Todas las categorías</option>
+        </select>
+        <input type="month" id="expense-month" class="input-month">
+      </div>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Categoría</th>
+              <th>Descripción</th>
+              <th>Monto</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="expenses-table-body">
+            <tr><td colspan="6" class="text-center">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Ingresos -->
+    <section id="page-incomes" class="page">
+      <div class="page-header">
+        <h1>💰 Ingresos</h1>
+        <button class="btn-primary" onclick="openIncomeForm()">+ Nuevo Ingreso</button>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <div class="filter-group">
+        <select id="income-category" class="input-select">
+          <option value="">Todas las categorías</option>
+        </select>
+        <input type="month" id="income-month" class="input-month">
+      </div>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Categoría</th>
+              <th>Descripción</th>
+              <th>Monto</th>
+              <th>Recurrente</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="incomes-table-body">
+            <tr><td colspan="6" class="text-center">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Facturas -->
+    <section id="page-invoices" class="page">
+      <div class="page-header">
+        <h1>📋 Facturas</h1>
+        <button class="btn-primary" onclick="document.getElementById('invoice-upload').click()">
+          + Subir Factura
+        </button>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <input type="file" id="invoice-upload" style="display:none;" accept="image/*" onchange="handleInvoiceUpload(event)">
+      
+      <div class="filter-group">
+        <input type="month" id="invoice-month" class="input-month">
+      </div>
+      
+      <div class="invoices-grid" id="invoices-grid">
+        <p class="text-center">Cargando facturas...</p>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Presupuestos -->
+    <section id="page-budgets" class="page">
+      <div class="page-header">
+        <h1>📈 Presupuestos</h1>
+        <button class="btn-primary" onclick="openBudgetForm()">+ Nuevo Presupuesto</button>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <div id="budgets-list"></div>
+    </section>
+
+    <!-- PÁGINA: Reportes -->
+    <section id="page-reports" class="page">
+      <div class="page-header">
+        <h1>📄 Reportes</h1>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <div class="reports-grid">
+        <div class="report-card">
+          <h3>Reporte Mensual</h3>
+          <p>Resumen de ingresos y gastos del mes</p>
+          <button class="btn-secondary" onclick="downloadReport('monthly', 'pdf')">Descargar PDF</button>
+          <button class="btn-secondary" onclick="downloadReport('monthly', 'json')">Descargar JSON</button>
+        </div>
+        
+        <div class="report-card">
+          <h3>Reporte Anual</h3>
+          <p>Análisis completo del año</p>
+          <button class="btn-secondary" onclick="downloadReport('annual', 'pdf')">Descargar PDF</button>
+          <button class="btn-secondary" onclick="downloadReport('annual', 'json')">Descargar JSON</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Admin -->
+    <section id="page-admin" class="page">
+      <div class="page-header">
+        <h1>⚙️ Administración</h1>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('users')">Usuarios</button>
+        <button class="admin-tab" onclick="switchAdminTab('branches')">Sucursales</button>
+        <button class="admin-tab" onclick="switchAdminTab('subscription')">Suscripción</button>
+        <button class="admin-tab" onclick="switchAdminTab('metrics')">Métricas</button>
+      </div>
+      
+      <!-- Usuarios -->
+      <div id="admin-users" class="admin-tab-content active">
+        <button class="btn-primary" onclick="openUserForm()">+ Agregar Usuario</button>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Sucursales -->
+      <div id="admin-branches" class="admin-tab-content">
+        <button class="btn-primary" onclick="openBranchForm()">+ Nueva Sucursal</button>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Ciudad</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="branches-table-body">
+            <tr><td colspan="4" class="text-center">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Suscripción -->
+      <div id="admin-subscription" class="admin-tab-content">
+        <div class="subscription-info">
+          <h3 id="current-plan">Plan: Gratis</h3>
+          <p id="plan-limits">Límites del plan</p>
+          <button class="btn-primary" onclick="openUpgradeDialog()">Mejorar Plan</button>
+        </div>
+      </div>
+      
+      <!-- Métricas -->
+      <div id="admin-metrics" class="admin-tab-content">
+        <div id="metrics-content">Cargando métricas...</div>
+      </div>
+    </section>
+
+    <!-- PÁGINA: Configuración -->
+    <section id="page-settings" class="page">
+      <div class="page-header">
+        <h1>🔧 Configuración</h1>
+        <button class="btn-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      </div>
+      
+      <div class="settings-sections">
+        <div class="settings-section">
+          <h3>Información de la Empresa</h3>
+          <form id="company-settings-form" onsubmit="saveCompanySettings(event)">
+            <div class="form-group">
+              <label>Nombre de la Empresa</label>
+              <input type="text" id="setting-company-name" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="setting-company-email">
+            </div>
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input type="tel" id="setting-company-phone">
+            </div>
+            <button type="submit" class="btn-primary">Guardar</button>
+          </form>
+        </div>
+        
+        <div class="settings-section">
+          <h3>Seguridad</h3>
+          <button class="btn-secondary" onclick="openPasswordDialog()">Cambiar Contraseña</button>
+          <button class="btn-danger" onclick="handleDeleteAccount()">Eliminar Cuenta</button>
+        </div>
+        
+        <div class="settings-section">
+          <h3>Preferencias</h3>
+          <label class="checkbox-label">
+            <input type="checkbox" id="setting-notifications">
+            Recibir notificaciones por email
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="setting-dark-mode">
+            Modo oscuro
+          </label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: Formulario de Gasto -->
+  <div id="expense-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nuevo Gasto</h2>
+        <button class="modal-close" onclick="closeModal('expense-modal')">✕</button>
+      </div>
+      <form id="expense-form" onsubmit="handleExpenseSubmit(event)">
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="form-expense-category" required></select>
+        </div>
+        <div class="form-group">
+          <label>Monto</label>
+          <input type="number" id="form-expense-amount" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" id="form-expense-date" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="form-expense-description" rows="3"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal('expense-modal')">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Formulario de Ingreso -->
+  <div id="income-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nuevo Ingreso</h2>
+        <button class="modal-close" onclick="closeModal('income-modal')">✕</button>
+      </div>
+      <form id="income-form" onsubmit="handleIncomeSubmit(event)">
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="form-income-category" required></select>
+        </div>
+        <div class="form-group">
+          <label>Monto</label>
+          <input type="number" id="form-income-amount" step="0.01" min="0" required>
+        </div>
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" id="form-income-date" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="form-income-description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="form-income-recurring">
+            Ingreso recurrente
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal('income-modal')">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/config.js"></script>
+  <script src="/js/setup.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/app.js"></script>
+  
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW:', err));
+    }
+  </script>
+</body>
+</html>
