@@ -1011,3 +1011,62 @@ textarea:focus-visible {
     margin-left: 0;
   }
 }
+
+/* PayPal Integration Styles */
+.payment-options {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 12px;
+}
+
+.payment-options h3 {
+  color: #1e40af;
+  margin-bottom: 1.5rem;
+  font-size: 1.3em;
+}
+
+.payment-method {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 2px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+  border-color: #1e40af;
+  box-shadow: 0 4px 12px rgba(30,64,175,0.1);
+}
+
+.payment-method h4 {
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+  font-size: 1.1em;
+}
+
+.payment-method p {
+  color: #6b7280;
+  margin-bottom: 1rem;
+  font-size: 0.95em;
+}
+
+#paypal-button-container {
+  margin-top: 1rem;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95em;
+  transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
