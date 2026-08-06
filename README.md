@@ -340,3 +340,4 @@ Eury De León - Founder, LUREVIX GROUP
 **Hecho con ❤️ para revolucionar la gestión financiera empresarial**
 
 [Documentación Técnica](./TECH.md) | [API Reference](./API.md) | [Changelog](./CHANGELOG.md)
+Azure redeploy 2026-08-06
