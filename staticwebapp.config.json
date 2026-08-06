@@ -1,50 +1,18 @@
 {
-  "routes": [
-    {
-      "route": "/*",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/api/*",
-      "serve": "/index.html",
-      "statusCode": 200
-    },
-    {
-      "route": "/manifest.json",
-      "headers": {
-        "Content-Type": "application/manifest+json"
-      }
-    },
-    {
-      "route": "/sw.js",
-      "headers": {
-        "Service-Worker-Allowed": "/"
-      }
-    }
-  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "*.{css,scss,js,png,gif,ico,jpg,jpeg,svg,webp}"
+      "*.{css,js,png,gif,ico,jpg,jpeg,svg,webp,json}"
     ]
   },
-  "defaultHeaders": {
+  "globalHeaders": {
     "Cache-Control": "max-age=3600",
     "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "DENY",
-    "X-XSS-Protection": "1; mode=block"
-  },
-  "mimeTypes": {
-    ".json": "application/json",
-    ".webmanifest": "application/manifest+json"
+    "X-Frame-Options": "DENY"
   },
   "responseOverrides": {
     "404": {
       "rewrite": "/index.html"
     }
-  },
-  "auth": {
-    "identityProviders": []
   }
 }
