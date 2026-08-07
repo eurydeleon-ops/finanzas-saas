@@ -73,7 +73,7 @@ const SUBSCRIPTION_PLANS = {
   },
   professional: {
     name: 'Profesional',
-    price: 29.99,
+    price: 9.99,
     currency: 'USD',
     billing_cycle: 'monthly',
     limits: {

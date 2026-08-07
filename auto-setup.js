@@ -24,7 +24,7 @@ CREATE TABLE plans (
 INSERT INTO plans (name, description, price, billing_cycle, features, max_invoices_per_month, max_users, max_branches) VALUES
 ('Free', 'Plan gratuito para principiantes', 0, 'monthly', '{"invoices": true, "reports": false, "api": false}', 10, 1, 1),
 ('Basic', 'Plan básico para pequeñas empresas', 29.99, 'monthly', '{"invoices": true, "reports": true, "api": false}', 200, 3, 2),
-('Professional', 'Plan profesional con funciones avanzadas', 99.99, 'monthly', '{"invoices": true, "reports": true, "api": true}', NULL, 10, 5),
+('Professional', 'Plan profesional con funciones avanzadas',29.99, 'monthly', '{"invoices": true, "reports": true, "api": true}', NULL, 10, 5),
 ('Enterprise', 'Plan empresarial con soporte dedicado', 299.99, 'monthly', '{"invoices": true, "reports": true, "api": true, "sso": true}', NULL, NULL, NULL);
 
 CREATE TABLE roles (
