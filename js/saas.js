@@ -87,7 +87,7 @@ const SaaSManager = {
         }
       },
       'Basic': {
-        price: 9.99,
+        price: 29.99,
         features: {
           invoices: '200/mes',
           users: '3',
@@ -98,7 +98,7 @@ const SaaSManager = {
         }
       },
       'Professional': {
-        price: 29.99,
+        price: 99.99,
         features: {
           invoices: 'Ilimitadas',
           users: '10',
